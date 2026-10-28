@@ -1,0 +1,17 @@
+# Keeps the pinned GitHub Actions current. The scanner images and the Snyk
+# CLI are pinned by digest or hash in ci-images.pins, which Dependabot does
+# not read; they are moved by hand, with the new hash checked against the
+# publisher's.
+#
+# Grouped: one pull request per week is a queue that gets read.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
