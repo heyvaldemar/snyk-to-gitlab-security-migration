@@ -1,0 +1,13 @@
+# Every image and tool the scans run, pinned by digest or checksum. CI reads
+# them from here and nowhere else.
+#
+# The three GitLab analyzers are MIT-licensed, so they may run outside GitLab.
+# Dependency Scanning (gemnasium) and DAST are under the GitLab Enterprise
+# Edition licence and are not run here; Container Scanning with language
+# packages turned on covers the dependencies instead.
+SEMGREP_IMAGE=registry.gitlab.com/security-products/semgrep:7@sha256:0d5c196b9563557d268917e6904e3021c300df90cde2b277e0c55eb80668055c
+SECRETS_IMAGE=registry.gitlab.com/security-products/secrets:7@sha256:6bb555a6d2d64fa4edd8fb3fda87a7e66fcb7347c7aef7532d84ea50fc776ec6
+CONTAINER_SCANNING_IMAGE=registry.gitlab.com/security-products/container-scanning:8@sha256:40299db9489a2312166282e385f42eb23f3f714b4af216d96fc5204c761145a8
+REGISTRY_IMAGE=registry:2@sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373
+SNYK_CLI_VERSION=1.1308.3
+SNYK_CLI_SHA256=5f323f45885341ea1473639859271925912ece82a2f77bc146bb4468f9838840

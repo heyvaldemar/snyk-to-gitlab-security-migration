@@ -1,0 +1,57 @@
+name: Scan
+
+# Both scanners on the same sample and the same image, so the migration is
+# judged on like for like. The reports are kept as an artifact of every run.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Snyk and GitLab's analyzers on one sample
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build the sample image into a local registry
+        run: |
+          set -a; . ./ci-images.pins; set +a
+          docker run -d --name registry -p 5000:5000 "$REGISTRY_IMAGE"
+          docker build -t localhost:5000/sample-app:ci sample-app
+          docker push localhost:5000/sample-app:ci
+
+      - name: GitLab SAST, Secret Detection and Container Scanning
+        run: ./scripts/scan-gitlab.sh localhost:5000/sample-app:ci
+
+      - name: Snyk Code and Snyk Container
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          if [ -z "${SNYK_TOKEN:-}" ]; then
+            echo "::notice::SNYK_TOKEN is not set yet, so only the GitLab side ran."
+            exit 0
+          fi
+          set -a; . ./ci-images.pins; set +a
+          curl -fsSL -o /tmp/snyk "https://static.snyk.io/cli/v${SNYK_CLI_VERSION}/snyk-linux"
+          echo "${SNYK_CLI_SHA256}  /tmp/snyk" | sha256sum -c -
+          sudo install -m 0755 /tmp/snyk /usr/local/bin/snyk
+          ./scripts/scan-snyk.sh localhost:5000/sample-app:ci
+
+      - name: Keep the reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: reports
+          path: reports/
+          if-no-files-found: error
