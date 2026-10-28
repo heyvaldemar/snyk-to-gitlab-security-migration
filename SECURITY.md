@@ -16,7 +16,7 @@ You can expect an acknowledgment within 7 days. There is no bounty program; vali
 
 ## What this repository is
 
-A reference, not a hosted service. `sample-app/` is vulnerable on purpose: every flaw in it is planted and marked `PLANT`, so that both scanners have something to find. It is never deployed. A vulnerability report about this repository is most likely about `migration/migrate.py` or the CI: a finding the gate lets through, or a report it misreads.
+A reference, not a hosted service. `sample-app/` is vulnerable on purpose: every flaw in it is planted and marked `PLANT`, so that both scanners have something to find. It is never deployed. GitHub's Dependabot alerts on `sample-app/requirements.txt` are these plants; Dependabot security updates are turned off for this repository so that no automated pull request fixes them, and the auto-merge merges nothing for them. A vulnerability report about this repository is most likely about `migration/migrate.py` or the CI: a finding the gate lets through, or a report it misreads.
 
 ## The planted key
 

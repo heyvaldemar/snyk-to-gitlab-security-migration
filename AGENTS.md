@@ -16,7 +16,7 @@ Never write it in clear: not in a file, a commit message, a test, a log or a rep
 
 ## Pins
 
-Scanner images by digest and the Snyk CLI by version and sha256, in `ci-images.pins`, moved by hand with the new hash checked against the publisher's. Actions by commit SHA, moved by Dependabot and merged only after Scan passes. The sample's base image is pinned by digest and is old on purpose.
+Scanner images by digest and the Snyk CLI by version and sha256, in `ci-images.pins`, moved by hand with the new hash checked against the publisher's. Actions by commit SHA, moved by Dependabot and merged only after Scan passes. The sample's base image and its Python packages are old on purpose. Dependabot security updates stay off here: a pull request that "fixes" a plant would merge itself through the auto-merge and silently empty the sample.
 
 ## Licences
 
