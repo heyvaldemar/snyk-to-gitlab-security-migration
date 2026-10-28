@@ -1,0 +1,11 @@
+# Snyk (https://snyk.io) policy file: the ignores a migration has to carry.
+version: v1.25.0
+ignore:
+  SNYK-DEBIAN10-COREUTILS-317465:
+    - '*':
+        reason: >-
+          Accepted risk: CVE-2016-2781 needs chroot --userspec, which this
+          image never runs.
+        expires: 2027-04-30T00:00:00.000Z
+        created: 2026-10-28T16:00:00.000Z
+patch: {}
