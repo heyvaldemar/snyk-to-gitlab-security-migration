@@ -1,0 +1,1 @@
+The native reports of Scan run 40721855944 (2026-10-28), unchanged except that the planted key is redacted and the JSON is written compactly. The tests judge migrate.py against real tool output, not hand-written JSON.

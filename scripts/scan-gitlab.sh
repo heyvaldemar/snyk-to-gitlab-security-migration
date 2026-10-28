@@ -34,6 +34,17 @@ docker run --rm --network host -e CI_PROJECT_DIR=/src \
 for r in sast secret-detection container-scanning; do
   cp "$work/gl-$r-report.json" "$out/" || { echo "no gl-$r-report.json was written" >&2; exit 1; }
 done
+# The planted key must not travel with the reports: GitLab's secret report
+# quotes the line it found the key on, and the reports are kept as artifacts.
+python3 - "$out" "$work/settings.py" <<'SCRUB'
+import os, re, sys
+key = re.search(r'"([^"]+)"', open(sys.argv[2]).read()).group(1)
+for name in os.listdir(sys.argv[1]):
+    path = os.path.join(sys.argv[1], name)
+    text = open(path).read()
+    if key in text:
+        open(path, "w").write(text.replace(key, "<planted key, redacted>"))
+SCRUB
 python3 - "$out" <<'PY'
 import json, os, sys
 for name in sorted(os.listdir(sys.argv[1])):

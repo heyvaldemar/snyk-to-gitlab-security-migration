@@ -1,0 +1,12 @@
+{
+ "_why": "Every critical or high Snyk finding with no GitLab counterpart needs a decision here, with the reason a reviewer can check. migrate.py fails the gate on any that has none, and on any decision left behind once its gap is gone.",
+ "accepted_gaps": [
+  {
+   "snyk_id": "python/XSS",
+   "file": "app.py",
+   "line": 24,
+   "reason": "GitLab's default Python ruleset does not report Flask returning command output as reflected XSS (CWE-79); Snyk Code does. The line is still a GitLab finding after the move, for command injection (CWE-78, bandit.B602), so it is not invisible; its XSS facet is. Reporting that facet needs a custom SAST ruleset, an Ultimate feature this repository does not exercise.",
+   "decided": "2026-10-28"
+  }
+ ]
+}

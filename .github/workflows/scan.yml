@@ -48,6 +48,21 @@ jobs:
           sudo install -m 0755 /tmp/snyk /usr/local/bin/snyk
           ./scripts/scan-snyk.sh localhost:5000/sample-app:ci
 
+      - name: The migration gate, on this run's reports
+        # Judged on what both tools reported minutes ago, not on stored data:
+        # if an advisory database starts disagreeing on a critical or high
+        # finding, this fails until the gap is fixed or decided.
+        run: |
+          if [ ! -f reports/snyk/snyk-code.sarif ]; then
+            echo "::notice::No Snyk reports in this run, so there is nothing to migrate."
+            exit 0
+          fi
+          rc=0
+          python3 -I migration/migrate.py --snyk reports/snyk --gitlab reports/gitlab \
+            --decisions migration/decisions.json --out reports/migration || rc=$?
+          [ -f reports/migration/report.md ] && cat reports/migration/report.md >> "$GITHUB_STEP_SUMMARY"
+          exit "$rc"
+
       - name: Keep the reports
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -55,3 +70,16 @@ jobs:
           name: reports
           path: reports/
           if-no-files-found: error
+
+  test:
+    name: migrate.py on real reports, and every way it can be broken
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Unit tests, each gate rule shown a report that breaks it
+        run: python3 -I -W error::ResourceWarning -m unittest discover -s tests -v
