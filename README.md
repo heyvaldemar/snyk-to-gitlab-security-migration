@@ -8,7 +8,7 @@ Both tools scan the same sample application and the same container image in ever
 
 ## What one run shows
 
-From the reports of [run 40723004978](https://github.com/heyvaldemar/snyk-to-gitlab-security-migration/actions/runs/40723004978), counted once per Snyk issue and installed package:
+From the reports of [run 40723821452](https://github.com/heyvaldemar/snyk-to-gitlab-security-migration/actions/runs/40723821452), counted once per Snyk issue and installed package:
 
 | Snyk findings | matched in GitLab | ignore carried | gap, decided | gap, below the gate |
 |---|---:|---:|---:|---:|
