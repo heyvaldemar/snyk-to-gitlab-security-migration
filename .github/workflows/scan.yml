@@ -8,6 +8,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Weekly as well: GitLab removes old builds of its analyzers, and on
+  # 2026-11-01 the pinned secrets and container-scanning digests were gone,
+  # found only because an unrelated push ran the scan. A weekly run finds the
+  # next one within a week, where the fleet's triage reads it.
+  schedule:
+    - cron: "41 6 * * 2"
   workflow_dispatch:
 
 permissions:
