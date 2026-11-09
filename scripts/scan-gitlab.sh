@@ -26,8 +26,8 @@ base64 -d < plants/settings.py.b64 > "$work/settings.py"
 
 docker run --rm -e CI_PROJECT_DIR=/src -v "$work:/src" -w /src "$SEMGREP_IMAGE" /analyzer run
 docker run --rm -e CI_PROJECT_DIR=/src -v "$work:/src" -w /src "$SECRETS_IMAGE" /analyzer run
-docker run --rm --network host -e CI_PROJECT_DIR=/src \
-  -e CS_IMAGE="$image" -e CS_REGISTRY_INSECURE=true \
+CS_IMAGE="$image" docker run --rm --network host -e CI_PROJECT_DIR=/src \
+  -e CS_IMAGE -e CS_REGISTRY_INSECURE=true \
   -e CS_DISABLE_LANGUAGE_VULNERABILITY_SCAN=false \
   -v "$work:/src" -w /src "$CONTAINER_SCANNING_IMAGE" gtcs scan
 

@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_(no unreleased changes yet)_
+### Changed
+
+- **`scripts/scan-gitlab.sh` passes the image to scan by name (`-e CS_IMAGE`).** Not a secret, but fleet conformance now flags any value expanded into `-e NAME=`, and the scan's other values already went this way. Nothing the scan does changes.
 
 ## [1.0.0] - 2026-10-28
 
