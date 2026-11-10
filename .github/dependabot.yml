@@ -1,7 +1,8 @@
-# Keeps the pinned GitHub Actions current. The scanner images and the Snyk
-# CLI are pinned by digest or hash in ci-images.pins, which Dependabot does
-# not read; they are moved by hand, with the new hash checked against the
-# publisher's.
+# Keeps the pinned GitHub Actions current. The Snyk CLI and the local
+# registry image are pinned by hash and digest in ci-images.pins, which
+# Dependabot does not read; they are moved by hand, with the new hash checked
+# against the publisher's. GitLab's analyzers are named by tag there, and the
+# file says why.
 #
 # Grouped: one pull request per week is a queue that gets read.
 version: 2

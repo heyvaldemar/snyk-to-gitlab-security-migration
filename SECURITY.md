@@ -24,7 +24,7 @@ The key in `plants/settings.py.b64` is not a credential for any account. It is s
 
 ## Supply chain
 
-- Scanner images are pinned by digest and the Snyk CLI by version and checksum, in `ci-images.pins`.
+- The Snyk CLI is pinned by version and checksum and the local registry image by digest, in `ci-images.pins`. GitLab's analyzers cannot be held by digest, because GitLab deletes the build a tag named before; they are named by major tag, and every run records the digest it pulled and ran in `reports/analyzers.json`.
 - Actions are pinned by commit SHA and moved by Dependabot, merged only after the Scan workflow passes.
 - Releases carry a signed source archive with build provenance.
 

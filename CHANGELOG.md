@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **The scan runs again: GitLab's analyzers are named by major tag, and each run records the digest it pulled.** GitLab republishes its analyzer tags and deletes the build a tag named before. The digests pinned on 28 October were gone by 1 November, the ones pinned that day were gone by 3 November, and the weekly scan stayed red until 10 November. `ci-images.pins` now names the three analyzers by major tag, the way GitLab's own CI templates do. `scripts/scan-gitlab.sh` pulls each one once, runs the digest that pull returned, and writes it with the analyzer's version to `reports/analyzers.json`, kept with the reports of every run. The Snyk CLI and the local registry image stay pinned by checksum and digest.
+
 ### Changed
 
 - **`scripts/scan-gitlab.sh` passes the image to scan by name (`-e CS_IMAGE`).** Not a secret, but fleet conformance now flags any value expanded into `-e NAME=`, and the scan's other values already went this way. Nothing the scan does changes.

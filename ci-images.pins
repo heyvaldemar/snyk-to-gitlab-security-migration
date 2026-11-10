@@ -1,13 +1,26 @@
-# Every image and tool the scans run, pinned by digest or checksum. CI reads
-# them from here and nowhere else.
+# Every image and tool the scans run. CI reads them from here and nowhere else.
 #
 # The three GitLab analyzers are MIT-licensed, so they may run outside GitLab.
 # Dependency Scanning (gemnasium) and DAST are under the GitLab Enterprise
 # Edition licence and are not run here; Container Scanning with language
 # packages turned on covers the dependencies instead.
-SEMGREP_IMAGE=registry.gitlab.com/security-products/semgrep:7@sha256:0d5c196b9563557d268917e6904e3021c300df90cde2b277e0c55eb80668055c
-SECRETS_IMAGE=registry.gitlab.com/security-products/secrets:7@sha256:ecce05c8750d776dc46ddca8f1b62a3777a7acb30d191b04e68092b2ae75fe78
-CONTAINER_SCANNING_IMAGE=registry.gitlab.com/security-products/container-scanning:8@sha256:9063541c2a0f5b50f1d5501d56ee211632e4d5f5391c4021ff7af23c8ddffca4
+#
+# THE ANALYZERS ARE NAMED BY TAG, ON PURPOSE. GitLab publishes each analyzer
+# again under the same tags and deletes the build a tag named before. The
+# digests pinned here on 2026-10-28 were gone by 11-01, and the ones pinned on
+# 11-01 were gone by 11-03 ("manifest unknown"). Exact versions move too:
+# secrets 7.41.0 ran here from one digest on 10-28 and its tag names another
+# today. A digest from that registry holds for days, and a pin that breaks
+# every week is a scan that does not run.
+#
+# So they are named by major tag, the way GitLab's own CI templates name their
+# analyzers, and the scan runs what a GitLab pipeline would pull that day.
+# scripts/scan-gitlab.sh pulls each one once, runs the digest it pulled, and
+# writes that digest and the analyzer's version into reports/analyzers.json.
+SEMGREP_IMAGE=registry.gitlab.com/security-products/semgrep:7
+SECRETS_IMAGE=registry.gitlab.com/security-products/secrets:7
+CONTAINER_SCANNING_IMAGE=registry.gitlab.com/security-products/container-scanning:8
+# These two publishers keep what they publish: pinned by digest and by checksum.
 REGISTRY_IMAGE=registry:2@sha256:a3d8aaa63ed8681a604f1dea0aa03f100d5895b6a58ace528858a7b332415373
 SNYK_CLI_VERSION=1.1308.3
 SNYK_CLI_SHA256=5f323f45885341ea1473639859271925912ece82a2f77bc146bb4468f9838840

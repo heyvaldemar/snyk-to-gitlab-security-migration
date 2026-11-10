@@ -74,7 +74,7 @@ Findings GitLab reports and Snyk does not are listed for triage and not gated: a
 |---|---|
 | `sample-app/` | The application both tools scan, with planted flaws marked `PLANT`, and its `.snyk` policy |
 | `plants/settings.py.b64` | The planted key, stored encoded so that neither git history nor push protection ever holds it in clear; decoded only for a scan, and redacted from every report |
-| `ci-images.pins` | Every scanner image by digest and the Snyk CLI by version and checksum |
+| `ci-images.pins` | What the scans run: GitLab's analyzers by major tag, because GitLab deletes the builds a digest would pin, with the digest each run pulled written to `reports/analyzers.json`; the Snyk CLI by version and checksum |
 | `scripts/scan-gitlab.sh`, `scripts/scan-snyk.sh` | Each tool run by hand, the same way CI runs it |
 | `migration/migrate.py` | The mapping, the carried ignores and the gate; Python 3.9+, standard library only |
 | `migration/decisions.json` | The recorded decisions on gaps |
